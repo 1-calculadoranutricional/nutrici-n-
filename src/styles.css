@@ -1,0 +1,624 @@
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+@import "tailwindcss";
+
+/* =====================================
+   1. RESET BASE (UI / APP MODERNA)
+   ================================== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  overflow-x: clip;
+  touch-action: pan-y;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+body {
+  min-height: 100vh;
+  text-rendering: optimizeLegibility;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Google Sans Flex", sans-serif;
+  overflow-x: clip;
+  touch-action: pan-y;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+.sidebar::-webkit-scrollbar {
+  display: none;
+}
+
+html.drawer-scroll-locked {
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+body.drawer-scroll-locked {
+  overflow-x: clip;
+  overflow-y: visible;
+  touch-action: none;
+}
+
+/* =====================================
+   2. VARIABLES Y TEMA
+   ================================== */
+:root {
+  --blue: #4285f4;
+  --red: #ea4335;
+  --yellow: #fbbc04;
+  --green: #34a853;
+  --bg: #ffffff;
+  --surface: #f8f9fa;
+  --text: #3c4043;
+  --text-secondary: #5f6368;
+  --border: #dee2e6;
+  --hover-bg: rgba(0, 0, 0, 0.06);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --blue: #8ab4f8;
+    --red: #f28b82;
+    --yellow: #fdd663;
+    --green: #81c995;
+    --bg: #131314;
+    --surface: #1e1f20;
+    --text: #e3e3e3;
+    --text-secondary: #c4c7c5;
+    --border: #444746;
+    --hover-bg: rgba(255, 255, 255, 0.08);
+  }
+}
+
+/* =====================================
+   APP STRUCTURE (SIDEBAR / OVERLAY / CONTENT)
+   ================================== */
+.app-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+.main-content {
+  flex: 1;
+  min-width: 0;
+  position: relative;
+  z-index: 1200;
+  background: var(--bg);
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100vw;
+  background: var(--bg);
+  border-right: 1px solid var(--border);
+  z-index: 1400;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  touch-action: pan-y;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  will-change: transform;
+  backface-visibility: hidden;
+  contain: layout style paint;
+  transform: translateX(-100%);
+  pointer-events: none;
+}
+
+.sidebar-edge-shadow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 18px;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1390;
+  opacity: 0;
+  background: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0.24),
+    rgba(0, 0, 0, 0.08) 45%,
+    transparent
+  );
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  transform: translateX(0px);
+}
+
+.sidebar-inner {
+  width: 100%;
+  min-height: 100%;
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+.drawer-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1350;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  touch-action: none;
+  overscroll-behavior: contain;
+  will-change: opacity;
+  backface-visibility: hidden;
+}
+
+@media (min-width: 768px) {
+  .sidebar {
+    width: 30% !important;
+    max-width: 400px;
+    transform: translateX(0) !important;
+    box-shadow: none !important;
+    pointer-events: auto !important;
+    transition: none !important;
+  }
+
+  .sidebar-inner {
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .drawer-overlay {
+    display: none !important;
+  }
+
+  .sidebar-edge-shadow {
+    display: none !important;
+  }
+
+  .main-content {
+    margin-left: min(30%, 400px);
+    transform: none !important;
+    transition: none !important;
+    z-index: auto;
+  }
+
+  .mobile-menu-toggle {
+    display: none !important;
+  }
+
+  .fab {
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+.sidebar-content {
+  padding: 24px 12px;
+}
+
+.menu-item {
+  width: 100%;
+  border: none;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 0.2s;
+  margin-bottom: 4px;
+  font-size: 14px;
+}
+
+.menu-item:hover {
+  background: var(--hover-bg);
+}
+
+.menu-item .material-symbols-outlined {
+  color: var(--text-secondary);
+}
+
+.menu-section {
+  margin-bottom: 32px;
+}
+
+.menu-section-title {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  padding: 8px 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* =====================================
+   3. BASE TIPOGRÁFICA
+   ================================== */
+h1 {
+  font-size: 17px;
+  font-weight: 700;
+  margin-right: auto;
+}
+
+h2 {
+  font-size: 19px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+/* =====================================
+   4. LAYOUT ESTRUCTURAL
+   ================================== */
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  height: 44px;
+  padding: 0 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+}
+
+.header-content {
+  width: 100%;
+  max-width: 1200px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cards-main {
+  max-width: 1200px;
+  margin: 30px auto 0 auto;
+  padding: 0 16px 96px 16px;
+  display: grid;
+  gap: 20px;
+}
+
+/* =====================================
+   5. COMPONENTES BASE
+   ================================== */
+.icon-button {
+  background: transparent;
+  border: none;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 30%;
+  cursor: pointer;
+  color: var(--text-secondary);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.icon {
+  padding: 10px;
+  font-size: 17px;
+  border-radius: 30%;
+  cursor: pointer;
+  color: var(--text-secondary);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.material-symbols-outlined.icon {
+  width: auto;
+  height: auto;
+  font-size: 17px;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon:hover {
+  background: var(--hover-bg);
+}
+
+.download-html-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 30px;
+  padding: 0 10px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.download-html-btn:hover {
+  background: var(--hover-bg);
+}
+
+.card {
+  background: var(--surface);
+  padding: 16px;
+  border-radius: 12px;
+  border: 2px solid;
+  border-top-width: 8px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.card-icon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+}
+
+.card-icon .material-symbols-outlined {
+  width: 24px;
+  height: 24px;
+  font-size: 24px;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.percentage {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: 10px;
+  color: var(--text-secondary);
+  background: rgba(128, 128, 128, 0.1);
+}
+
+.icon-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+/* =====================================
+   6. VARIANTES DE COMPONENTES
+   ================================== */
+.card.blue {
+  border-color: var(--blue);
+}
+
+.card.red {
+  border-color: var(--red);
+}
+
+.card.yellow {
+  border-color: var(--yellow);
+}
+
+.card.green {
+  border-color: var(--green);
+}
+
+.card.multi {
+  border: 2px solid transparent;
+  border-top-width: 8px;
+  background:
+    linear-gradient(var(--surface), var(--surface)) padding-box,
+    linear-gradient(
+      90deg,
+      var(--blue),
+      var(--red),
+      var(--yellow),
+      var(--green)
+    )
+    border-box;
+}
+
+.blue .card-icon {
+  background: rgba(66, 133, 244, 0.1);
+  color: var(--blue);
+}
+
+.red .card-icon {
+  background: rgba(234, 67, 53, 0.1);
+  color: var(--red);
+}
+
+.yellow .card-icon {
+  background: rgba(251, 188, 4, 0.1);
+  color: var(--yellow);
+}
+
+.green .card-icon {
+  background: rgba(52, 168, 83, 0.1);
+  color: var(--green);
+}
+
+.multi .card-icon {
+  background: rgba(128, 128, 128, 0.1);
+}
+
+/* =====================================
+   7. COMPONENTES ESPECIALES
+   ================================== */
+.fab {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 1250;
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  border: 2px solid transparent;
+  background:
+    linear-gradient(var(--surface), var(--surface)) padding-box,
+    linear-gradient(
+      90deg,
+      var(--blue),
+      var(--red),
+      var(--yellow),
+      var(--green)
+    )
+    border-box;
+  color: var(--blue);
+  cursor: pointer;
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* =====================================
+   8. UTILIDADES VISUALES
+   ================================== */
+.google-gradient {
+  display: inline-block;
+  background: linear-gradient(
+    135deg,
+    var(--blue) 15%,
+    var(--red) 40%,
+    var(--yellow) 65%,
+    var(--green) 88%
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* =====================================
+   9. MEDIA QUERIES (LAYOUT)
+   ================================== */
+@media (min-width: 640px) {
+  .cards-main {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .full {
+    grid-column: 1 / -1;
+  }
+}
+
+.kcal-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.kcal-target {
+  font-size: 13px;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 0;
+  text-align: center;
+}
+
+.summary-item strong {
+  display: block;
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+
+.summary-label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-secondary);
+}
+
+.color-key {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  flex-shrink: 0;
+  align-self: center;
+}
+
+.key-blue {
+  background: var(--blue);
+}
+
+.key-red {
+  background: var(--red);
+}
+
+.key-yellow {
+  background: var(--yellow);
+}
+
+.key-green {
+  background: var(--green);
+}
+
+.main-progress {
+  background: rgba(128, 128, 128, 0.2);
+  height: 10px;
+  border-radius: 6px;
+  margin: 12px 0 16px 0;
+  overflow: hidden;
+  display: flex;
+}
+
+.kcal-number {
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  line-height: 1;
+  color: var(--text);
+}
+
+.prog-bar {
+  height: 100%;
+  width: 25%;
+}
+
+.prog-blue {
+  background: var(--blue);
+}
+
+.prog-red {
+  background: var(--red);
+}
+
+.prog-yellow {
+  background: var(--yellow);
+}
+
+.prog-green {
+  background: var(--green);
+}

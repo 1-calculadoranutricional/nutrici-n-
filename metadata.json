@@ -1,0 +1,6 @@
+{
+  "name": "Menú Touch Deslizante",
+  "description": "Sistema de menú lateral deslizante con gesto táctil de tres estados y efecto de empuje.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

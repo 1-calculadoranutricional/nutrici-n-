@@ -1,0 +1,352 @@
+<div class="app-container">
+  <aside
+    #sidebar
+    id="sidebar"
+    class="sidebar"
+    aria-label="Menú lateral"
+    data-testid="menu-lateral"
+    [attr.data-state]="isMobile() ? menuState() : 'desktop'"
+    [attr.aria-hidden]="isMenuHiddenFromA11y()"
+    [attr.inert]="!isMenuInteractive() ? '' : null"
+  >
+    <div #sidebarInner class="sidebar-inner">
+      <div class="sidebar-content">
+      <div class="menu-section">
+        <div class="menu-section-title">Comidas</div>
+        <button type="button" class="menu-item" (click)="onMenuItemClick()">
+          <span class="material-symbols-outlined">bakery_dining</span>
+          <span>Desayuno</span>
+        </button>
+        <button type="button" class="menu-item" (click)="onMenuItemClick()">
+          <span class="material-symbols-outlined">restaurant</span>
+          <span>Almuerzo</span>
+        </button>
+        <button type="button" class="menu-item" (click)="onMenuItemClick()">
+          <span class="material-symbols-outlined">coffee</span>
+          <span>Merienda</span>
+        </button>
+        <button type="button" class="menu-item" (click)="onMenuItemClick()">
+          <span class="material-symbols-outlined">dark_mode</span>
+          <span>Cena</span>
+        </button>
+      </div>
+
+      <div class="menu-section">
+        <div class="menu-section-title">Análisis</div>
+        <button type="button" class="menu-item" (click)="onMenuItemClick()">
+          <span class="material-symbols-outlined">analytics</span>
+          <span>Resumen diario</span>
+        </button>
+        <button type="button" class="menu-item" (click)="onMenuItemClick()">
+          <span class="material-symbols-outlined">monitoring</span>
+          <span>Estadísticas</span>
+        </button>
+        <button type="button" class="menu-item" (click)="onMenuItemClick()">
+          <span class="material-symbols-outlined">trending_up</span>
+          <span>Progreso</span>
+        </button>
+      </div>
+
+      <div class="menu-section">
+        <div class="menu-section-title">Configuración</div>
+        <button type="button" class="menu-item" (click)="onMenuItemClick()">
+          <span class="material-symbols-outlined">person</span>
+          <span>Perfil</span>
+        </button>
+        <button type="button" class="menu-item" (click)="onMenuItemClick()">
+          <span class="material-symbols-outlined">flag</span>
+          <span>Objetivos</span>
+        </button>
+        <button type="button" class="menu-item" (click)="onMenuItemClick()">
+          <span class="material-symbols-outlined">settings</span>
+          <span>Ajustes</span>
+        </button>
+      </div>
+    </div>
+    </div>
+  </aside>
+
+  <div
+    #sidebarShadow
+    id="sidebarShadow"
+    class="sidebar-edge-shadow"
+    aria-hidden="true"
+  ></div>
+
+  <div
+    #overlay
+    id="overlay"
+    class="drawer-overlay"
+    data-testid="drawer-overlay"
+    aria-hidden="true"
+    (click)="closeMenu()"
+  ></div>
+
+  <div
+    #envoltorio
+    id="envoltorio"
+    class="main-content"
+    data-testid="main-wrapper"
+    (transitionend)="onWrapperTransitionEnd($event)"
+  >
+    <header class="app-header">
+      <div class="header-content">
+        <button
+          type="button"
+          class="icon-button mobile-menu-toggle"
+          id="openSidebar"
+          data-testid="menu-toggle"
+          aria-label="Abrir o cerrar menú"
+          [attr.aria-expanded]="menuState() !== 0"
+          aria-controls="sidebar"
+          (click)="toggleMenu()"
+        >
+          <span class="material-symbols-outlined icon">menu</span>
+        </button>
+        <h1>Calculadora Nutricional</h1>
+        <button
+          id="descargarHtml"
+          type="button"
+          class="download-html-btn"
+          data-testid="download-html"
+          aria-label="Descargar index.html autocontenido"
+          (click)="downloadStandaloneHtml()"
+        >
+          <mat-icon class="!text-[16px] !w-4 !h-4 leading-none">download</mat-icon>
+          <span>HTML</span>
+        </button>
+      </div>
+    </header>
+
+    <main class="cards-main">
+      <div class="card blue">
+        <div class="icon-row">
+          <div class="card-icon">
+            <span class="material-symbols-outlined">bakery_dining</span>
+          </div>
+          <span class="percentage">25.0%</span>
+        </div>
+        <h2>Desayuno</h2>
+        <div class="kcal-row">
+          <span class="color-key key-blue" aria-hidden="true"></span>
+          <span class="kcal-number">500</span>
+          <span class="kcal-target">/ 500 kcal</span>
+        </div>
+        <div class="main-progress">
+          <div class="prog-bar prog-blue"></div>
+          <div class="prog-bar prog-red"></div>
+          <div class="prog-bar prog-yellow"></div>
+          <div class="prog-bar prog-green"></div>
+        </div>
+        <div class="summary-grid">
+          <div class="summary-item">
+            <strong>110g</strong>
+            <span class="summary-label">
+              <span class="color-key key-red" aria-hidden="true"></span>
+              <span>Proteína</span>
+            </span>
+          </div>
+          <div class="summary-item">
+            <strong>180g</strong>
+            <span class="summary-label">
+              <span class="color-key key-yellow" aria-hidden="true"></span>
+              <span>Carbos</span>
+            </span>
+          </div>
+          <div class="summary-item">
+            <strong>55g</strong>
+            <span class="summary-label">
+              <span class="color-key key-green" aria-hidden="true"></span>
+              <span>Grasas</span>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card red">
+        <div class="icon-row">
+          <div class="card-icon">
+            <span class="material-symbols-outlined">restaurant</span>
+          </div>
+          <span class="percentage">25.0%</span>
+        </div>
+        <h2>Almuerzo</h2>
+        <div class="kcal-row">
+          <span class="color-key key-blue" aria-hidden="true"></span>
+          <span class="kcal-number">500</span>
+          <span class="kcal-target">/ 500 kcal</span>
+        </div>
+        <div class="main-progress">
+          <div class="prog-bar prog-blue"></div>
+          <div class="prog-bar prog-red"></div>
+          <div class="prog-bar prog-yellow"></div>
+          <div class="prog-bar prog-green"></div>
+        </div>
+        <div class="summary-grid">
+          <div class="summary-item">
+            <strong>110g</strong>
+            <span class="summary-label">
+              <span class="color-key key-red" aria-hidden="true"></span>
+              <span>Proteína</span>
+            </span>
+          </div>
+          <div class="summary-item">
+            <strong>180g</strong>
+            <span class="summary-label">
+              <span class="color-key key-yellow" aria-hidden="true"></span>
+              <span>Carbos</span>
+            </span>
+          </div>
+          <div class="summary-item">
+            <strong>55g</strong>
+            <span class="summary-label">
+              <span class="color-key key-green" aria-hidden="true"></span>
+              <span>Grasas</span>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card yellow">
+        <div class="icon-row">
+          <div class="card-icon">
+            <span class="material-symbols-outlined">coffee</span>
+          </div>
+          <span class="percentage">25.0%</span>
+        </div>
+        <h2>Merienda</h2>
+        <div class="kcal-row">
+          <span class="color-key key-blue" aria-hidden="true"></span>
+          <span class="kcal-number">500</span>
+          <span class="kcal-target">/ 500 kcal</span>
+        </div>
+        <div class="main-progress">
+          <div class="prog-bar prog-blue"></div>
+          <div class="prog-bar prog-red"></div>
+          <div class="prog-bar prog-yellow"></div>
+          <div class="prog-bar prog-green"></div>
+        </div>
+        <div class="summary-grid">
+          <div class="summary-item">
+            <strong>110g</strong>
+            <span class="summary-label">
+              <span class="color-key key-red" aria-hidden="true"></span>
+              <span>Proteína</span>
+            </span>
+          </div>
+          <div class="summary-item">
+            <strong>180g</strong>
+            <span class="summary-label">
+              <span class="color-key key-yellow" aria-hidden="true"></span>
+              <span>Carbos</span>
+            </span>
+          </div>
+          <div class="summary-item">
+            <strong>55g</strong>
+            <span class="summary-label">
+              <span class="color-key key-green" aria-hidden="true"></span>
+              <span>Grasas</span>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card green">
+        <div class="icon-row">
+          <div class="card-icon">
+            <span class="material-symbols-outlined">dark_mode</span>
+          </div>
+          <span class="percentage">25.0%</span>
+        </div>
+        <h2>Cena</h2>
+        <div class="kcal-row">
+          <span class="color-key key-blue" aria-hidden="true"></span>
+          <span class="kcal-number">500</span>
+          <span class="kcal-target">/ 500 kcal</span>
+        </div>
+        <div class="main-progress">
+          <div class="prog-bar prog-blue"></div>
+          <div class="prog-bar prog-red"></div>
+          <div class="prog-bar prog-yellow"></div>
+          <div class="prog-bar prog-green"></div>
+        </div>
+        <div class="summary-grid">
+          <div class="summary-item">
+            <strong>110g</strong>
+            <span class="summary-label">
+              <span class="color-key key-red" aria-hidden="true"></span>
+              <span>Proteína</span>
+            </span>
+          </div>
+          <div class="summary-item">
+            <strong>180g</strong>
+            <span class="summary-label">
+              <span class="color-key key-yellow" aria-hidden="true"></span>
+              <span>Carbos</span>
+            </span>
+          </div>
+          <div class="summary-item">
+            <strong>55g</strong>
+            <span class="summary-label">
+              <span class="color-key key-green" aria-hidden="true"></span>
+              <span>Grasas</span>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card multi full">
+        <div class="icon-row">
+          <div class="card-icon">
+            <span class="material-symbols-outlined google-gradient">fact_check</span>
+          </div>
+          <span class="percentage">100.0%</span>
+        </div>
+        <h2>Resumen Total</h2>
+        <div class="kcal-row">
+          <span class="color-key key-blue" aria-hidden="true"></span>
+          <span class="kcal-number">2,000</span>
+          <span class="kcal-target">/ 2,000 kcal</span>
+        </div>
+        <div class="main-progress">
+          <div class="prog-bar prog-blue"></div>
+          <div class="prog-bar prog-red"></div>
+          <div class="prog-bar prog-yellow"></div>
+          <div class="prog-bar prog-green"></div>
+        </div>
+        <div class="summary-grid">
+          <div class="summary-item">
+            <strong>440g</strong>
+            <span class="summary-label">
+              <span class="color-key key-red" aria-hidden="true"></span>
+              <span>Proteína</span>
+            </span>
+          </div>
+          <div class="summary-item">
+            <strong>720g</strong>
+            <span class="summary-label">
+              <span class="color-key key-yellow" aria-hidden="true"></span>
+              <span>Carbos</span>
+            </span>
+          </div>
+          <div class="summary-item">
+            <strong>220g</strong>
+            <span class="summary-label">
+              <span class="color-key key-green" aria-hidden="true"></span>
+              <span>Grasas</span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <button
+    #fabBtn
+    type="button"
+    class="fab"
+    aria-label="Añadir"
+  >
+    <span class="material-symbols-outlined">add</span>
+  </button>
+</div>
